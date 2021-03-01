@@ -1,0 +1,11 @@
+.authorize__link {
+    color: #ffffff;
+    font-size: 14px;
+    padding: 0;
+    text-decoration: none;
+    transition: opacity .5 ease-in;
+}
+
+.authorize__link:hover {
+    opacity: .6;
+}

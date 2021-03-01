@@ -1,0 +1,16 @@
+.authorize__submit {
+    background-color: #ffffff;
+    border: none;
+    padding: 14px 0;
+    text-align: center;
+    cursor: pointer;
+    font-family: Inter;
+    font-size: 18px;
+    line-height: 1.22;
+    border-radius: 2px;
+    justify-self: flex-end;
+}
+
+.authorize__submit:hover {
+    background-color: #cccccc;
+}
