@@ -8,7 +8,6 @@ import React from 'react';
 import { Route, Switch, Redirect } from "react-router-dom";
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
@@ -16,7 +15,7 @@ import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
-import auth from '../utils/auth';
+
 
 function App() {
   const [isEditProfilePopupOpened, setIsEditProfilePopupOpened] = React.useState(false);
@@ -36,7 +35,6 @@ function App() {
 
   const [isSucces, setIsSucces] = React.useState(false);
   React.useEffect(() => {
-
     async function getContent() {
       try {
         setCards(await api.getInitialCards());
@@ -46,6 +44,7 @@ function App() {
     }
     getContent();
   }, []);
+
 
   async function handleCardLike(card) {
     const isLiked = card.likes.some((l) => {
@@ -84,6 +83,23 @@ function App() {
     }
     getUserInfo();
   }, []);
+
+  React.useEffect(() => {
+    async function checkToken() {
+      const jwt = localStorage.getItem('jwt');
+      if (jwt) {
+        try {
+          const res = await api.checkToken(jwt)
+          setLoggedIn(true);
+          setEmail(res.data.email);
+        } catch (e) {
+          console.log(e.message);
+        }
+      }
+    }
+    checkToken();
+  }, [loggedIn]);
+
   function handleAvatarClick() {
     setIsEditAvatarPopupOpened(true);
   }
@@ -140,7 +156,7 @@ function App() {
 
   async function handleRegister(data) {
     try {
-      await auth.registration(data);
+      await api.registration(data);
       setIsSucces(true);
       setIsInfoTooltipOpened(true);
     }
@@ -153,9 +169,10 @@ function App() {
 
   async function handleLogin(data) {
     try {
-      const jwt = await auth.login(data);
-      const res = await auth.checkToken(jwt.token);
+      const login = await api.login(data);
+      const res = await api.checkToken(login.token);
       setEmail(res.data.email);
+      localStorage.setItem('jwt', login.token);
       setLoggedIn(true);
     }
     catch (e) {
@@ -165,6 +182,7 @@ function App() {
 
   function handleLogOut() {
     setLoggedIn(false);
+    localStorage.removeItem('jwt');
   }
   return (
     <>
@@ -190,10 +208,10 @@ function App() {
                   <Register onSubmit={handleRegister} />
                 </div>
               </Route>
-              <Route>
-                {loggedIn ? (<Redirect to="/" />) : (<Redirect to="/sign-up" />)}
-              </Route>
             </Switch>
+            <Route>
+              {loggedIn ? (<Redirect exact to="/" />) : (<Redirect to="/sign-up" />)}
+            </Route>
             <Footer />
             <EditProfilePopup isOpened={isEditProfilePopupOpened} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
             <EditAvatarPopup isOpened={isEditAvatarPopupOpened} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />

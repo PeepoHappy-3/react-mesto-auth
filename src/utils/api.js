@@ -2,6 +2,7 @@ export class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
     this._token = options.token;
+    this._loginUrl = options.loginUrl;
   }
 
   _getResponse(res) {
@@ -114,9 +115,51 @@ export class Api {
       return this._getResponse(res);
     })
   }
+  registration(data) {
+    return fetch(`${this._loginUrl}signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        data
+      )
+    }).then(res => {
+      return this._getResponse(res);
+    })
+  }
+
+  login(data) {
+    return fetch(`${this._loginUrl}signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        data
+      )
+    }).then(res => {
+      return this._getResponse(res);
+    })
+  }
+
+  checkToken(token) {
+    return fetch(`${this._loginUrl}users/me`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    }).then(res => {
+      return this._getResponse(res);
+    })
+  }
+
 }
+
 const options = {
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-19/',
+  loginUrl: 'https://auth.nomoreparties.co/',
   token: 'aac4a60b-b09e-40d2-9391-f119b1a59443'
 }
 const api = new Api(options);

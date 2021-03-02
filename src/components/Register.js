@@ -31,7 +31,7 @@ function Register(props) {
         <input value={password || ''} onChange={handlePasswordChange} name="password" className="authorize__input" type="password" />
       </fieldset>
       <button className="authorize__submit" type="submit">Зарегестрироваться</button>
-      <p className="authorize__text">Уже зарегестрированы? <Link className="authorize__link" to="./sign-in">Войти</Link></p>
+      <p className="authorize__text">Уже зарегестрированы? <Link className="authorize__link" to="/sign-in">Войти</Link></p>
     </form>
   );
 }

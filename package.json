@@ -23,7 +23,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/PeepoHappy-3/mesto-react.git"
+        "url": "git+https://github.com/PeepoHappy-3/react-mesto-auth.git"
     },
     "eslintConfig": {
         "extends": [
