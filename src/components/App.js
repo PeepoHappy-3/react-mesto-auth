@@ -8,18 +8,23 @@ import React from 'react';
 import { Route, Switch, Redirect } from "react-router-dom";
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
+import auth from '../utils/auth';
 
 function App() {
   const [isEditProfilePopupOpened, setIsEditProfilePopupOpened] = React.useState(false);
   const [isEditAvatarPopupOpened, setIsEditAvatarPopupOpened] = React.useState(false);
   const [isAddPlacePopupOpened, setIsAddPlacePopupOpened] = React.useState(false);
   const [isImagePopupOpened, setIsImagePopupOpened] = React.useState(false);
+  const [isInfoTooltipOpened, setIsInfoTooltipOpened] = React.useState(false);
+
   const [selectedCard, setSelectedCard] = React.useState({});
 
   const [currentUser, setCurrentUser] = React.useState({});
@@ -27,7 +32,9 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [email, setEmail] = React.useState('');
 
+  const [isSucces, setIsSucces] = React.useState(false);
   React.useEffect(() => {
 
     async function getContent() {
@@ -100,6 +107,7 @@ function App() {
     setIsEditProfilePopupOpened(false);
     setIsAddPlacePopupOpened(false);
     setIsImagePopupOpened(false);
+    setIsInfoTooltipOpened(false);
   }
 
   async function handleUpdateUser(user) {
@@ -129,40 +137,68 @@ function App() {
       console.log(e.message);
     }
   }
+
+  async function handleRegister(data) {
+    try {
+      await auth.registration(data);
+      setIsSucces(true);
+      setIsInfoTooltipOpened(true);
+    }
+    catch (e) {
+      setIsSucces(false);
+      setIsInfoTooltipOpened(true);
+      return Promise.reject(new Error(e.message));
+    }
+  }
+
+  async function handleLogin(data) {
+    try {
+      const jwt = await auth.login(data);
+      const res = await auth.checkToken(jwt.token);
+      setEmail(res.data.email);
+      setLoggedIn(true);
+    }
+    catch (e) {
+      return Promise.reject(new Error(e.message));
+    }
+  }
+
+  function handleLogOut() {
+    setLoggedIn(false);
+  }
   return (
     <>
       <div className="page">
         <div className="page__container">
+
           <CurrentUserContext.Provider value={currentUser}>
-            <Header src={Logo} />
+
+            <Header src={Logo} onLogOut={handleLogOut} email={email} loggedIn={loggedIn} />
             <Switch>
-              <ProtectedRoute path="/main" loggedIn={loggedIn} component={Main}
+              <ProtectedRoute exact path="/" component={Main} loggedIn={loggedIn}
                 onEditAvatar={handleAvatarClick} onEditProfile={handleProfileClick}
                 onAddPlace={handleAddClick} onCardClick={handleCardClick}
                 cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete}
               />
-              <Route path="/login">
+              <Route path="/sign-in">
                 <div className="authorize">
-                  <Login />
+                  <Login onSubmit={handleLogin} />
                 </div>
               </Route>
-              <Route path="/register">
+              <Route path="/sign-up">
                 <div className="authorize">
-                  <Register />
+                  <Register onSubmit={handleRegister} />
                 </div>
               </Route>
               <Route>
-                {loggedIn ? (
-                  <Redirect to="/main" />
-                ) : (
-                    <Redirect to="/register" />
-                  )}
+                {loggedIn ? (<Redirect to="/" />) : (<Redirect to="/sign-up" />)}
               </Route>
             </Switch>
             <Footer />
             <EditProfilePopup isOpened={isEditProfilePopupOpened} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
             <EditAvatarPopup isOpened={isEditAvatarPopupOpened} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
             <AddPlacePopup isOpened={isAddPlacePopupOpened} onClose={closeAllPopups} onSubmit={handleAddPlaceSubmit} />
+            <InfoTooltip isOpened={isInfoTooltipOpened} onClose={closeAllPopups} isSucces={isSucces} />
           </CurrentUserContext.Provider>
         </div>
         <PopupWithForm name="confirm" title="Вы уверены?" onClose={closeAllPopups} />

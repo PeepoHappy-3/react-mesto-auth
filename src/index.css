@@ -52,3 +52,10 @@
 @import url(./blocks/authorize/__fieldset/authorize__fieldset.css);
 @import url(./blocks/authorize/__text/authorize__text.css);
 @import url(./blocks/authorize/__link/authorize__link.css);
+@import url(./blocks/authorize/__heading/authorize__heading.css);
+@import url(./blocks/header/__link/header__link.css);
+@import url(./blocks/header/__profile/header__profile.css);
+@import url(./blocks/header/__email/header__email.css);
+@import url(./blocks/popup/__inner/popup__inner.css);
+@import url(./blocks/popup/__icon/popup__icon.css);
+@import url(./blocks/popup/__info/popup__info.css);

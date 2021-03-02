@@ -3,7 +3,7 @@
     font-size: 14px;
     padding: 0;
     text-decoration: none;
-    transition: opacity .5 ease-in;
+    transition: opacity .2s ease-in;
 }
 
 .authorize__link:hover {
