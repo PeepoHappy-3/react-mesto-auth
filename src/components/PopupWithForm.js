@@ -1,14 +1,9 @@
 import React from 'react';
 
 function PopupWithForm(props) {
-  const ref = React.useRef();
-  React.useEffect(() => {
-    ref.current.addEventListener('click', () => {
-      console.log('click');
-    });
-  }, []);
+
   return (
-    <div className={`popup popup_type_${props.name} ${props.isOpened && "popup_opened"}`} ref={ref}>
+    <div className={`popup popup_type_${props.name} ${props.isOpened && "popup_opened"}`}>
       <div className="popup__container">
         <button type="button" className="popup__close" onClick={props.onClose}></button>
         <form action="#" className="popup__form" name={props.name} noValidate onSubmit={props.onSubmit}>

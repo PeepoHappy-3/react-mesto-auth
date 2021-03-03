@@ -5,7 +5,7 @@ import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import React from 'react';
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
@@ -34,6 +34,8 @@ function App() {
   const [email, setEmail] = React.useState('');
 
   const [isSuccess, setIsSuccess] = React.useState(false);
+
+  const history = useHistory();
   React.useEffect(() => {
     async function getContent() {
       try {
@@ -159,11 +161,12 @@ function App() {
       await api.registration(data);
       setIsSuccess(true);
       setIsInfoTooltipOpened(true);
+      history.push('/sign-in');
     }
     catch (e) {
       setIsSuccess(false);
       setIsInfoTooltipOpened(true);
-      return Promise.reject(new Error(e.message));
+      console.log(e.message)
     }
   }
 
@@ -176,7 +179,7 @@ function App() {
       setLoggedIn(true);
     }
     catch (e) {
-      return Promise.reject(new Error(e.message));
+      console.log(e.message);
     }
   }
 
