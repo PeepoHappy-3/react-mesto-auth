@@ -33,7 +33,7 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [email, setEmail] = React.useState('');
 
-  const [isSucces, setIsSucces] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
   React.useEffect(() => {
     async function getContent() {
       try {
@@ -157,11 +157,11 @@ function App() {
   async function handleRegister(data) {
     try {
       await api.registration(data);
-      setIsSucces(true);
+      setIsSuccess(true);
       setIsInfoTooltipOpened(true);
     }
     catch (e) {
-      setIsSucces(false);
+      setIsSuccess(false);
       setIsInfoTooltipOpened(true);
       return Promise.reject(new Error(e.message));
     }
@@ -216,7 +216,7 @@ function App() {
             <EditProfilePopup isOpened={isEditProfilePopupOpened} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
             <EditAvatarPopup isOpened={isEditAvatarPopupOpened} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
             <AddPlacePopup isOpened={isAddPlacePopupOpened} onClose={closeAllPopups} onSubmit={handleAddPlaceSubmit} />
-            <InfoTooltip isOpened={isInfoTooltipOpened} onClose={closeAllPopups} isSucces={isSucces} />
+            <InfoTooltip isOpened={isInfoTooltipOpened} onClose={closeAllPopups} isSuccess={isSuccess} />
           </CurrentUserContext.Provider>
         </div>
         <PopupWithForm name="confirm" title="Вы уверены?" onClose={closeAllPopups} />
