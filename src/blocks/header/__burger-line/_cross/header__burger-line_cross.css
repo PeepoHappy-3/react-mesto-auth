@@ -1,0 +1,16 @@
+.header__burger-line_cross {
+    background-color: inherit;
+    transition: all .2s ease-in;
+}
+
+.header__burger-line_cross::after {
+    transform: rotate(45deg);
+    bottom: 45%;
+    opacity: 1;
+}
+
+.header__burger-line_cross::before {
+    transform: rotate(-45deg);
+    top: 45%;
+    opacity: 1;
+}

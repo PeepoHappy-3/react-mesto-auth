@@ -3,4 +3,11 @@
     line-height: 1.22;
     margin: 0;
     padding: 0;
+    color: #ffffff;
+}
+
+@media screen and (max-width:500px) {
+    .header__email {
+        margin: 0 0 18px;
+    }
 }

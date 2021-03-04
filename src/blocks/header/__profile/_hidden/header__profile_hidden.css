@@ -1,0 +1,10 @@
+.header__profile_hidden {
+    position: absolute;
+}
+
+@media screen and (max-width:500px) {
+    .header__profile_hidden {
+        position: absolute;
+        top: -100%;
+    }
+}

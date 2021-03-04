@@ -59,3 +59,8 @@
 @import url(./blocks/popup/__inner/popup__inner.css);
 @import url(./blocks/popup/__icon/popup__icon.css);
 @import url(./blocks/popup/__info/popup__info.css);
+@import url(./blocks/header/__inner/header__inner.css);
+@import url(./blocks/header/__burger/header__burger.css);
+@import url(./blocks/header/__burger-line/header__burger-line.css);
+@import url(./blocks/header/__burger-line/_cross/header__burger-line_cross.css);
+@import url(./blocks/header/__profile/_hidden/header__profile_hidden.css);
