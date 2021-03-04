@@ -5,12 +5,12 @@
 
 .header__burger-line_cross::after {
     transform: rotate(45deg);
-    bottom: 45%;
+    bottom: 9px;
     opacity: 1;
 }
 
 .header__burger-line_cross::before {
     transform: rotate(-45deg);
-    top: 45%;
+    top: 12px;
     opacity: 1;
 }
