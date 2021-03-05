@@ -8,3 +8,10 @@
     align-items: center;
     border-radius: 5px;
 }
+
+@media screen and (max-width:500px) {
+    .popup__inner {
+        padding: 0px 18px;
+        max-width: 260px;
+    }
+}
