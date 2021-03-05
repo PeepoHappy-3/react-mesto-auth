@@ -1,6 +1,8 @@
 .popup__image {
+    position: relative;
     max-width: 75vw;
     max-height: 75vh;
     margin-top: 4px;
     margin-right: 4px;
+    z-index: 3;
 }

@@ -1,9 +1,14 @@
 import React from 'react';
 
 function PopupWithForm(props) {
+  const ref = React.useRef();
 
+  function handleOverlayClose(e) {
+    if (e.target === ref.current)
+      props.onClose();
+  }
   return (
-    <div className={`popup popup_type_${props.name} ${props.isOpened && "popup_opened"}`}>
+    <div className={`popup popup_type_${props.name} ${props.isOpened && "popup_opened"}`} ref={ref} onClick={handleOverlayClose}>
       <div className="popup__container">
         <button type="button" className="popup__close" onClick={props.onClose}></button>
         <form action="#" className="popup__form" name={props.name} noValidate onSubmit={props.onSubmit}>
