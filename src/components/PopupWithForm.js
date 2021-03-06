@@ -16,7 +16,7 @@ function PopupWithForm(props) {
             {props.title}
           </h2>
           {props.children}
-          <button type="submit" className="popup__submit" >Сохранить</button>
+          <button type="submit" className="popup__submit" >{props.btnName}</button>
         </form>
       </div>
     </div >

@@ -11,6 +11,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import DeleteCardPopup from './DeleteCardPopup';
 import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
@@ -23,7 +24,10 @@ function App() {
   const [isAddPlacePopupOpened, setIsAddPlacePopupOpened] = React.useState(false);
   const [isImagePopupOpened, setIsImagePopupOpened] = React.useState(false);
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = React.useState(false);
+  const [isDeletePopupOpened, setIsDeletePopupOpened] = React.useState(false);
+  const [isDelete, setIsDelete] = React.useState(false);
 
+  const [deletedCard, setDeletedCard] = React.useState('');
   const [selectedCard, setSelectedCard] = React.useState({});
 
   const [currentUser, setCurrentUser] = React.useState({});
@@ -64,16 +68,21 @@ function App() {
     }
   }
 
-  async function handleCardDelete(card) {
+  async function handleDeleteSubmit() {
     try {
-      await api.deleteCard(card._id);
+      await api.deleteCard(deletedCard);
       const newCards = cards.filter((c) => {
-        return c._id !== card._id;
+        return c._id !== deletedCard;
       })
       setCards(newCards);
+      closeAllPopups();
     } catch (e) {
       console.log(e.message);
     }
+  }
+  function handleCardDelete(card) {
+    setDeletedCard(card._id);
+    setIsDeletePopupOpened(true);
   }
   React.useEffect(() => {
     async function getUserInfo() {
@@ -126,6 +135,7 @@ function App() {
     setIsAddPlacePopupOpened(false);
     setIsImagePopupOpened(false);
     setIsInfoTooltipOpened(false);
+    setIsDeletePopupOpened(false);
   }
 
   async function handleUpdateUser(user) {
@@ -219,10 +229,10 @@ function App() {
             <EditProfilePopup isOpened={isEditProfilePopupOpened} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
             <EditAvatarPopup isOpened={isEditAvatarPopupOpened} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
             <AddPlacePopup isOpened={isAddPlacePopupOpened} onClose={closeAllPopups} onSubmit={handleAddPlaceSubmit} />
+            <DeleteCardPopup isOpened={isDeletePopupOpened} onClose={closeAllPopups} onSubmit={handleDeleteSubmit} />
             <InfoTooltip isOpened={isInfoTooltipOpened} onClose={closeAllPopups} isSuccess={isSuccess} />
           </CurrentUserContext.Provider>
         </div>
-        <PopupWithForm name="confirm" title="Вы уверены?" onClose={closeAllPopups} />
         <ImagePopup card={selectedCard} isOpened={isImagePopupOpened} onClose={closeAllPopups} />
       </div>
     </>
